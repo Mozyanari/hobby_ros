@@ -1,0 +1,24 @@
+<launch>
+    <!--wiiリモコンの起動-->
+    <node pkg="wiimote" name="wiimote_node" type="wiimote_node.py" respawn="true">
+        <remap from="imu/data" to="imu/data_raw"/>
+    </node>
+
+    <!--madgwickの起動-->
+    <!--
+    <node pkg ="imu_filter_madgwick" name ="imu_filter_node" type ="imu_filter_node">
+        <param name="use_mag" value="false"/>
+    </node>
+    -->
+
+    
+    <!--デバック用のframe_id追加-->
+    <!--
+    <node pkg ="icart_vr" name ="add_fram_id" type ="add_fram_id">
+    </node>
+    -->
+
+    <!--統括するoculusの起動-->
+    <node pkg ="icart_vr" name ="oculus" type ="oculus">
+    </node>
+</launch>
