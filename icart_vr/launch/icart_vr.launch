@@ -1,6 +1,18 @@
 <launch>
+    <!--T-frog上のマイコンに関する設定-->
+	<arg name="port_robot" default="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
+
+	<!--実行する際の引数がここに反映されてパラメータを反映-->
+	<arg name="robot_param" default="/home/$(env USER)/icart-edu.param"/>
+
+    <!--ypspur_rosノードを生成-->
+	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros" respawn="true">
+		<param name="port" value="$(arg port_robot)" />
+		<param name="param_file" value="$(arg robot_param)" />
+	</node>
+
     <!--wiiリモコンの起動-->
-    <node pkg="wiimote" name="wiimote_node" type="wiimote_node.py" respawn="true">
+    <node pkg="wiimote" name="wiimote_node" type="wiimote_node.py" respawn="true" output="screen">
         <remap from="imu/data" to="imu/data_raw"/>
     </node>
 
@@ -21,4 +33,16 @@
     <!--統括するoculusの起動-->
     <node pkg ="icart_vr" name ="oculus" type ="oculus">
     </node>
+
+    <!--aruduinoと通信-->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+        <param name="port" value="/dev/ttyUSB0" />
+    </node>
+
+    <!--cameranodeを立ち上げ-->
+    <node pkg="cv_camera" type="cv_camera_node" name="cv_camera" >
+    </node>
+
+    <!--rosbridgeを起動-->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
 </launch>
