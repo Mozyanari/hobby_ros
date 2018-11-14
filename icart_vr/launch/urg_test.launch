@@ -1,0 +1,8 @@
+<launch>
+    <!--urg_nodeノードを生成-->
+	<node pkg="urg_node" type="urg_node" name="urg_node">
+		<param name="serial_port" value="/dev/ttyACM0"/>
+		<param name="cluster" value="90"/>
+
+	</node>
+</launch>
