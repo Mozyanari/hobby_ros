@@ -1,0 +1,4 @@
+<launch>
+     <node respawn="true" name="map_server" pkg="map_server" type="map_server" args="/home/morishita/maps/map_2.yaml"/>
+</launch>
+
