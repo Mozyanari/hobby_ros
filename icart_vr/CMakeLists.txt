@@ -133,6 +133,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(oculus src/oculus.cpp)
 add_executable(add_fram_id src/add_fram_id.cpp)
+add_executable(scan_filter src/scan_filter.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,6 +148,7 @@ add_executable(add_fram_id src/add_fram_id.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(oculus ${catkin_LIBRARIES})
 target_link_libraries(add_fram_id ${catkin_LIBRARIES})
+target_link_libraries(scan_filter ${catkin_LIBRARIES})
 
 #############
 ## Install ##
