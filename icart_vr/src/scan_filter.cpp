@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
 #include <math.h>
+#include <sensor_msgs/CompressedImage.h>
 
 //クラス定義(どのような構造か定義)-----------------------------------------------------
 class scan_filter
@@ -11,6 +12,7 @@ class scan_filter
 
   //コールバック関数定義
   void cb_scan_filter(const sensor_msgs::LaserScan::ConstPtr &data);
+  void cb_image(const sensor_msgs::CompressedImage::ConstPtr &data);
 
   //ノードハンドラ作成
   ros::NodeHandle nh;
@@ -18,7 +20,7 @@ class scan_filter
   //使用変数定義
   //使用するTopicの定義
   ros::Subscriber sub_scan;
-
+  ros::Subscriber sub_image;
   ros::Publisher  pub_scan_filter;
 
 };
@@ -26,6 +28,7 @@ class scan_filter
 //コンストラクタ定義(初期化時に必ず呼び出される部分)---------------------------------------
 scan_filter::scan_filter(){
     sub_scan = nh.subscribe("/scan", 5, &scan_filter::cb_scan_filter,this);
+    sub_image = nh.subscribe("/kinect2/sd/image_depth/compressed",5,&scan_filter::cb_image,this);
 
     pub_scan_filter = nh.advertise<sensor_msgs::LaserScan>("/scan_filter", 1000);
 }
@@ -36,11 +39,29 @@ void scan_filter::cb_scan_filter(const sensor_msgs::LaserScan::ConstPtr &data){
   //データ数を数える
   int data_number =data->ranges.size();
   for(int i=0;i<data_number;i++){
+      //nanかどうかの判定
       if(std::isnan(send_data.ranges[i])){
           send_data.ranges[i] = 0;
       }
+      //infかどうかの判定
+      if(std::isinf(send_data.ranges[i])){
+          send_data.ranges[i] = 0;
+      }
+
   }
   pub_scan_filter.publish(send_data);
+}
+
+void scan_filter::cb_image(const sensor_msgs::CompressedImage::ConstPtr &data){
+    int size=0;
+    for(int i=0;i<data->data.size();i++){
+        if(data->data[i] == 255){
+            i++;
+        }
+        size++;
+    }
+    //int size = data->data.size();
+    ROS_INFO("new%d",size);
 }
 
 //実行されるメイン関数---------------------------------------------------------------
