@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  tf
   #wiimote
 )
 
@@ -134,6 +135,7 @@ include_directories(
 add_executable(oculus src/oculus.cpp)
 add_executable(add_fram_id src/add_fram_id.cpp)
 add_executable(scan_filter src/scan_filter.cpp)
+add_executable(odom_publisher src/odom_publisher.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,6 +151,7 @@ add_executable(scan_filter src/scan_filter.cpp)
 target_link_libraries(oculus ${catkin_LIBRARIES})
 target_link_libraries(add_fram_id ${catkin_LIBRARIES})
 target_link_libraries(scan_filter ${catkin_LIBRARIES})
+target_link_libraries(odom_publisher ${catkin_LIBRARIES})
 
 #############
 ## Install ##
