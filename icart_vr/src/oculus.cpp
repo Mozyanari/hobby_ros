@@ -11,7 +11,7 @@
 #define M_PI       3.14159265358979323846  /* pi */
 //ロボットの最高速度
 #define ROBOT_V 0.1
-#define ROBOT_W 0.1
+#define ROBOT_W 0.5
 
 //クラス定義(どのような構造か定義)-----------------------------------------------------
 class oculus
@@ -215,8 +215,9 @@ void oculus::cb_wii(const sensor_msgs::Imu::ConstPtr &data){
 void oculus::cb_wii_button(const sensor_msgs::Joy::ConstPtr &data){
   if(data->buttons[1]){
     icart_speed.linear.x = ROBOT_V;
-  }else if(data->buttons[4]){
+  }else if(data->buttons[3]){
     icart_speed.linear.x = -ROBOT_V;
+    icart_speed.angular.z = -icart_speed.angular.z;
   }else{
     icart_speed.linear.x = 0;
     icart_speed.angular.z = 0;
