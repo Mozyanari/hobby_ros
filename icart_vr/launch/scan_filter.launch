@@ -1,5 +1,5 @@
 <launch>
 	<node pkg="icart_vr" type="scan_filter" name="scan_filter">
-        <remap from="scan" to="/icart_first/laser/scan"/>
+        <!--<remap from="scan" to="/icart_first/laser/scan"/>-->
 	</node>
 </launch>

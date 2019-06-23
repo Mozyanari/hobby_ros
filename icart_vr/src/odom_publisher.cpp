@@ -56,8 +56,8 @@ void odom_publisher::pub_send_odom(const ros::TimerEvent&){
     ros::Time now = ros::Time::now();
     
     try{
-        listener.waitForTransform("/map","/base_foot_print_first",now,ros::Duration(1.0));
-        listener.lookupTransform("/map","/base_foot_print_first",now,transform);
+        listener.waitForTransform("/map","/base_link",now,ros::Duration(1.0));
+        listener.lookupTransform("/map","/base_link",now,transform);
     }catch(tf::TransformException &ex){
         ROS_ERROR("%s",ex.what());
         ros::Duration(1.0).sleep();
@@ -72,7 +72,7 @@ void odom_publisher::pub_send_odom(const ros::TimerEvent&){
     pub_odom.pose.pose.orientation.x = transform.getRotation().getX();
     pub_odom.pose.pose.orientation.y = transform.getRotation().getY();
     pub_odom.pose.pose.orientation.z = transform.getRotation().getZ();
-    pub_odom.pose.pose.orientation.z = transform.getRotation().getZ();
+    pub_odom.pose.pose.orientation.w = transform.getRotation().getW();
     //時間の取得
     //pub_odom.header.stamp = now;
 
